@@ -2,7 +2,6 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Concatenate, Self
 
-import marimo as mo
 import plotly.express as px
 import plotly.graph_objects as go
 import polars as pl
@@ -103,9 +102,6 @@ class Displayer:
         Build and return a Plotly figure using the provided function and stored data.
         """
         return self._plot_fn(func, *args, **kwargs)
-
-    def mo_display(self, title: str) -> mo.Html:
-        return mo.vstack([mo.md(title), *self.graphs])
 
     def update_color(self, key: str, value: str) -> Self:
         """
