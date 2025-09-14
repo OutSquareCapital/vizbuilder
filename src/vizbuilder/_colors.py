@@ -41,20 +41,16 @@ def _join_rgb(left: int, right: int, factor: float) -> int:
     return math.floor(left + (right - left) * factor)
 
 
-def _get_keys(df: pl.LazyFrame | pl.DataFrame, group: str) -> pc.Iter[str]:
+def palette_from_df(
+    df: pl.DataFrame | pl.LazyFrame, group: str, base_palette: Iterable[str]
+) -> dict[str, str]:
     return pc.Iter(
         df.lazy()
         .select(pl.col(group).unique().sort())
         .collect()
         .get_column(group)
         .to_list()
-    )
-
-
-def palette_from_df(
-    df: pl.DataFrame | pl.LazyFrame, group: str, base_palette: Iterable[str]
-) -> dict[str, str]:
-    return df.pipe(_get_keys, group).pipe(generate_palette, base_palette)
+    ).pipe(generate_palette, base_palette)
 
 
 def generate_palette(keys: pc.Iter[str], base_palette: Iterable[str]) -> dict[str, str]:
