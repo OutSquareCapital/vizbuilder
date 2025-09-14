@@ -3,7 +3,7 @@ name = "vizbuilder"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "plotly>=6.3.0",
     "plotly-stubs",
@@ -17,3 +17,8 @@ build-backend = "uv_build"
 
 [tool.uv.sources]
 pychain = { git = "https://github.com/OutSquareCapital/pychain.git" }
+
+[dependency-groups]
+dev = [
+    "pyarrow-stubs>=20.0.0.20250825",
+]
