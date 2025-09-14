@@ -1,0 +1,20 @@
+[project]
+name = "vizbuilder"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "marimo>=0.15.3",
+    "plotly>=6.3.0",
+    "plotly-stubs",
+    "polars>=1.33.1",
+    "pychain",
+    "plotly-stubs @ git+https://github.com/OutSquareCapital/plotly-stubs.git@add-colors-namespace"
+]
+[build-system]
+requires = ["uv_build>=0.8.15,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+pychain = { git = "https://github.com/OutSquareCapital/pychain.git" }
