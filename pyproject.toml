@@ -6,7 +6,6 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "plotly>=6.3.0",
-    "plotly-stubs",
     "polars>=1.33.1",
     "pychain",
     "plotly-stubs @ git+https://github.com/OutSquareCapital/plotly-stubs.git@add-colors-namespace",

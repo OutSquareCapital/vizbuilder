@@ -242,7 +242,6 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "plotly", specifier = ">=6.3.0" },
-    { name = "plotly-stubs" },
     { name = "plotly-stubs", git = "https://github.com/OutSquareCapital/plotly-stubs.git?rev=add-colors-namespace" },
     { name = "polars", specifier = ">=1.33.1" },
     { name = "pychain", git = "https://github.com/OutSquareCapital/pychain.git" },
