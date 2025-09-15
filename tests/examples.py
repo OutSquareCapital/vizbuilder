@@ -16,9 +16,19 @@ def source():
     )
 
 
-if __name__ == "__main__":
-    df: pl.LazyFrame = pl.scan_parquet(source()).sort("ticker", "date")
-    displayer = vz.Displayer.from_df(df, group="ticker", x="date", y="equity_log_adj")
+def plot_graphs():
+    displayer = (
+        pl.scan_parquet(source())
+        .sort("ticker", "date")
+        .pipe(vz.Displayer, group="ticker")
+        .set_color_map(base_palette=px.colors.qualitative.Plotly)
+        .set_template("plotly_dark")
+        .set_x("date")
+    )
 
-    displayer.plot(px.line).show()
+    displayer.set_y("equity_log_adj").plot(px.line).show()
     displayer.set_y("close").plot(px.line).show()
+
+
+if __name__ == "__main__":
+    print(vz.extract_scales())
