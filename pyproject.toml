@@ -8,7 +8,7 @@ dependencies = [
     "plotly>=6.3.0",
     "polars>=1.33.1",
     "pychain",
-    "plotly-stubs @ git+https://github.com/OutSquareCapital/plotly-stubs.git@add-colors-namespace",
+    "plotly-stubs @ git+https://github.com/OutSquareCapital/plotly-stubs.git@refactor-frame-types",
 ]
 [build-system]
 requires = ["uv_build>=0.8.15,<0.9.0"]
