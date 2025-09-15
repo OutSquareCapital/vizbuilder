@@ -147,7 +147,7 @@ wheels = [
 [[package]]
 name = "plotly-stubs"
 version = "0.0.6"
-source = { git = "https://github.com/OutSquareCapital/plotly-stubs.git?rev=refactor-frame-types#63bb6f6edde51ad176382dcc533f7f7d73fd5cee" }
+source = { git = "https://github.com/OutSquareCapital/plotly-stubs.git?rev=refactor-frame-types#5b88fe18983c55fa13b5cb08fff009cd1d4b743f" }
 
 [[package]]
 name = "polars"
