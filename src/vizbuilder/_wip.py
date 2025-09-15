@@ -40,53 +40,49 @@ class Base:
     hover_data: HoverData | None = None
 
 
+class Hierarchy(Base):
+    names: ColumnData | None = None
+    values: ColumnData | None = None
+    parents: ColumnData | None = None
+    path: ArrayLike | None = None
+    ids: ColumnData | None = None
+    maxdepth: int | None = None
+
+
 def treemap(
-    names: ColumnData | None = None,
-    values: ColumnData | None = None,
-    parents: ColumnData | None = None,
-    ids: ColumnData | None = None,
-    path: ArrayLike | None = None,
     color_continuous_scale: list[str] | None = None,
     range_color: Sequence[int | float] | None = None,
     color_continuous_midpoint: int | float | None = None,
     custom_data: MultiColumnData | None = None,
     labels: dict[str, str] | None = None,
     branchvalues: BranchVals | None = None,
-    maxdepth: int | None = None,
 ) -> go.Figure: ...
 def icicle(
-    names: ColumnData | None = None,
-    values: ColumnData | None = None,
-    parents: ColumnData | None = None,
-    path: ArrayLike | None = None,
-    ids: ColumnData | None = None,
     color_continuous_scale: list[str] | None = None,
     range_color: Sequence[int | float] | None = None,
     color_continuous_midpoint: int | float | None = None,
     custom_data: MultiColumnData | None = None,
     labels: dict[str, str] | None = None,
     branchvalues: BranchVals | None = None,
-    maxdepth: int | None = None,
 ) -> go.Figure: ...
 
 
 def sunburst(
-    names: ColumnData | None = None,
-    values: ColumnData | None = None,
-    parents: ColumnData | None = None,
-    path: ArrayLike | None = None,
-    ids: ColumnData | None = None,
     color_continuous_scale: list[str] | None = None,
     range_color: Sequence[int | float] | None = None,
     color_continuous_midpoint: int | float | None = None,
     custom_data: MultiColumnData | None = None,
     labels: dict[str, str] | None = None,
     branchvalues: BranchVals | None = None,
-    maxdepth: int | None = None,
 ) -> go.Figure: ...
 
 
-class XY(Base):
+class Animated(Base):
+    animation_frame: ColumnData | None = None
+    animation_group: ColumnData | None = None
+
+
+class XY(Animated):
     x: MultiColumnData | None = None
     y: MultiColumnData | None = None
     log_x: bool = False
@@ -95,15 +91,16 @@ class XY(Base):
     range_y: Sequence[int | float] | None = None
 
 
+class WithFacet(XY):
+    facet_row: ColumnData | None = None
+    facet_col: ColumnData | None = None
+    facet_col_wrap: int = 0
+    facet_row_spacing: float | None = None
+    facet_col_spacing: float | None = None
+
+
 def histogram(
     pattern_shape: ColumnData | None = None,
-    facet_row: ColumnData | None = None,
-    facet_col: ColumnData | None = None,
-    facet_col_wrap: int = 0,
-    facet_row_spacing: float | None = None,
-    facet_col_spacing: float | None = None,
-    animation_frame: ColumnData | None = None,
-    animation_group: ColumnData | None = None,
     category_orders: dict[str, list[str]] | None = None,
     labels: dict[str, str] | None = None,
     pattern_shape_sequence: list[str] | None = None,
@@ -122,14 +119,7 @@ def histogram(
 
 
 def violin(
-    facet_row: ColumnData | None = None,
-    facet_col: ColumnData | None = None,
-    facet_col_wrap: int = 0,
-    facet_row_spacing: float | None = None,
-    facet_col_spacing: float | None = None,
     custom_data: MultiColumnData | None = None,
-    animation_frame: ColumnData | None = None,
-    animation_group: ColumnData | None = None,
     category_orders: dict[str, list[str]] | None = None,
     labels: dict[str, str] | None = None,
     orientation: Orientation | None = None,
@@ -138,14 +128,7 @@ def violin(
     box: bool = False,
 ) -> go.Figure: ...
 def box(
-    facet_row: ColumnData | None = None,
-    facet_col: ColumnData | None = None,
-    facet_col_wrap: int = 0,
-    facet_row_spacing: float | None = None,
-    facet_col_spacing: float | None = None,
     custom_data: MultiColumnData | None = None,
-    animation_frame: ColumnData | None = None,
-    animation_group: ColumnData | None = None,
     category_orders: dict[str, list[str]] | None = None,
     labels: dict[str, str] | None = None,
     orientation: Orientation | None = None,
@@ -162,18 +145,15 @@ class XYError(XY):
     error_y_minus: ColumnData | None = None
 
 
+class XYErrorWithFacet(XYError, WithFacet):
+    pass
+
+
 def scatter(
     symbol: ColumnData | None = None,
     size: ColumnData | None = None,
     custom_data: MultiColumnData | None = None,
     text: ColumnData | None = None,
-    facet_row: ColumnData | None = None,
-    facet_col: ColumnData | None = None,
-    facet_col_wrap: int = 0,
-    facet_row_spacing: float | None = None,
-    facet_col_spacing: float | None = None,
-    animation_frame: ColumnData | None = None,
-    animation_group: ColumnData | None = None,
     category_orders: dict[str, list[str]] | None = None,
     labels: dict[str, str] | None = None,
     orientation: Orientation | None = None,
@@ -200,13 +180,6 @@ def line(
     symbol: ColumnData | None = None,
     custom_data: MultiColumnData | None = None,
     text: ColumnData | None = None,
-    facet_row: ColumnData | None = None,
-    facet_col: ColumnData | None = None,
-    facet_col_wrap: int = 0,
-    facet_row_spacing: float | None = None,
-    facet_col_spacing: float | None = None,
-    animation_frame: ColumnData | None = None,
-    animation_group: ColumnData | None = None,
     category_orders: dict[str, list[str]] | None = None,
     labels: dict[str, str] | None = None,
     orientation: Orientation | None = None,
@@ -222,16 +195,9 @@ def line(
 
 def bar(
     pattern_shape: ColumnData | None = None,
-    facet_row: ColumnData | None = None,
-    facet_col: ColumnData | None = None,
-    facet_col_wrap: int = 0,
-    facet_row_spacing: float | None = None,
-    facet_col_spacing: float | None = None,
     custom_data: MultiColumnData | None = None,
     text: ColumnData | None = None,
     base: ColumnData | None = None,
-    animation_frame: ColumnData | None = None,
-    animation_group: ColumnData | None = None,
     category_orders: dict[str, list[str]] | None = None,
     labels: dict[str, str] | None = None,
     color_continuous_scale: list[str] | None = None,
@@ -259,8 +225,6 @@ def scatter_3d(
     size: ColumnData | None = None,
     text: ColumnData | None = None,
     custom_data: MultiColumnData | None = None,
-    animation_frame: ColumnData | None = None,
-    animation_group: ColumnData | None = None,
     category_orders: dict[str, list[str]] | None = None,
     labels: dict[str, str] | None = None,
     size_max: int = 20,
@@ -277,8 +241,6 @@ def line_3d(
     line_group: ColumnData | None = None,
     symbol: ColumnData | None = None,
     custom_data: MultiColumnData | None = None,
-    animation_frame: ColumnData | None = None,
-    animation_group: ColumnData | None = None,
     category_orders: dict[str, list[str]] | None = None,
     labels: dict[str, str] | None = None,
     line_dash_sequence: list[str] | None = None,
