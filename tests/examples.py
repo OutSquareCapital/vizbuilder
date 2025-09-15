@@ -20,15 +20,10 @@ def plot_graphs():
     displayer = (
         pl.scan_parquet(source())
         .sort("ticker", "date")
-        .pipe(vz.Displayer, group="ticker")
-        .set_color_map(base_palette=px.colors.qualitative.Plotly)
-        .set_template("plotly_dark")
-        .set_x("date")
+        .pipe(vz.Displayer, group="ticker", template="plotly_dark")
     )
-
-    displayer.set_y("equity_log_adj").plot(px.line).show()
-    displayer.set_y("close").plot(px.line).show()
+    displayer.plot(px.line, x="date", y="close").show()
 
 
 if __name__ == "__main__":
-    print(vz.extract_scales())
+    plot_graphs()
