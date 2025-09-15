@@ -34,11 +34,68 @@ class Base:
     title: str | None = None
     subtitle: str | None = None
     template: Templates | None = None
+    width: int | None = None
+    height: int | None = None
+
+
+def treemap(
+    names: ColumnData | None = None,
+    values: ColumnData | None = None,
+    parents: ColumnData | None = None,
+    ids: ColumnData | None = None,
+    path: ArrayLike | None = None,
+    color_continuous_scale: list[str] | None = None,
+    range_color: Sequence[int | float] | None = None,
+    color_continuous_midpoint: int | float | None = None,
+    hover_name: ColumnData | None = None,
+    hover_data: HoverData | None = None,
+    custom_data: MultiColumnData | None = None,
+    labels: dict[str, str] | None = None,
+    branchvalues: BranchVals | None = None,
+    maxdepth: int | None = None,
+) -> go.Figure: ...
+def icicle(
+    names: ColumnData | None = None,
+    values: ColumnData | None = None,
+    parents: ColumnData | None = None,
+    path: ArrayLike | None = None,
+    ids: ColumnData | None = None,
+    color_continuous_scale: list[str] | None = None,
+    range_color: Sequence[int | float] | None = None,
+    color_continuous_midpoint: int | float | None = None,
+    hover_name: ColumnData | None = None,
+    hover_data: HoverData | None = None,
+    custom_data: MultiColumnData | None = None,
+    labels: dict[str, str] | None = None,
+    branchvalues: BranchVals | None = None,
+    maxdepth: int | None = None,
+) -> go.Figure: ...
+
+
+def sunburst(
+    names: ColumnData | None = None,
+    values: ColumnData | None = None,
+    parents: ColumnData | None = None,
+    path: ArrayLike | None = None,
+    ids: ColumnData | None = None,
+    color_continuous_scale: list[str] | None = None,
+    range_color: Sequence[int | float] | None = None,
+    color_continuous_midpoint: int | float | None = None,
+    hover_name: ColumnData | None = None,
+    hover_data: HoverData | None = None,
+    custom_data: MultiColumnData | None = None,
+    labels: dict[str, str] | None = None,
+    branchvalues: BranchVals | None = None,
+    maxdepth: int | None = None,
+) -> go.Figure: ...
+
+
+class XY(Base):
+    x: MultiColumnData | None = None
+    y: MultiColumnData | None = None
 
 
 def scatter(
-    x: MultiColumnData | None = None,
-    y: MultiColumnData | None = None,
     symbol: ColumnData | None = None,
     size: ColumnData | None = None,
     hover_name: ColumnData | None = None,
@@ -77,14 +134,10 @@ def scatter(
     range_x: Sequence[int | float] | None = None,
     range_y: Sequence[int | float] | None = None,
     render_mode: RenderMode = "auto",
-    width: int | None = None,
-    height: int | None = None,
 ) -> go.Figure: ...
 
 
 def line(
-    x: MultiColumnData | None = None,
-    y: MultiColumnData | None = None,
     line_group: ColumnData | None = None,
     line_dash: ColumnData | None = None,
     symbol: ColumnData | None = None,
@@ -117,14 +170,10 @@ def line(
     range_y: Sequence[int | float] | None = None,
     line_shape: LineShape | None = None,
     render_mode: RenderMode = "auto",
-    width: int | None = None,
-    height: int | None = None,
 ) -> go.Figure: ...
 
 
 def bar(
-    x: MultiColumnData | None = None,
-    y: MultiColumnData | None = None,
     pattern_shape: ColumnData | None = None,
     facet_row: ColumnData | None = None,
     facet_col: ColumnData | None = None,
@@ -157,14 +206,10 @@ def bar(
     range_x: Sequence[int | float] | None = None,
     range_y: Sequence[int | float] | None = None,
     text_auto: bool | str = False,
-    width: int | None = None,
-    height: int | None = None,
 ) -> go.Figure: ...
 
 
 def histogram(
-    x: MultiColumnData | None = None,
-    y: MultiColumnData | None = None,
     pattern_shape: ColumnData | None = None,
     facet_row: ColumnData | None = None,
     facet_col: ColumnData | None = None,
@@ -193,14 +238,10 @@ def histogram(
     cumulative: bool = False,
     nbins: int | None = None,
     text_auto: bool | str = False,
-    width: int | None = None,
-    height: int | None = None,
 ) -> go.Figure: ...
 
 
 def violin(
-    x: MultiColumnData | None = None,
-    y: MultiColumnData | None = None,
     facet_row: ColumnData | None = None,
     facet_col: ColumnData | None = None,
     facet_col_wrap: int = 0,
@@ -221,12 +262,8 @@ def violin(
     range_y: Sequence[int | float] | None = None,
     points: Points | bool = "outliers",
     box: bool = False,
-    width: int | None = None,
-    height: int | None = None,
 ) -> go.Figure: ...
 def box(
-    x: MultiColumnData | None = None,
-    y: MultiColumnData | None = None,
     facet_row: ColumnData | None = None,
     facet_col: ColumnData | None = None,
     facet_col_wrap: int = 0,
@@ -247,14 +284,10 @@ def box(
     range_y: Sequence[int | float] | None = None,
     points: Points | bool = "outliers",
     notched: bool = False,
-    width: int | None = None,
-    height: int | None = None,
 ) -> go.Figure: ...
 
 
 def scatter_3d(
-    x: MultiColumnData | None = None,
-    y: MultiColumnData | None = None,
     z: MultiColumnData | None = None,
     symbol: ColumnData | None = None,
     size: ColumnData | None = None,
@@ -285,12 +318,8 @@ def scatter_3d(
     range_x: Sequence[int | float] | None = None,
     range_y: Sequence[int | float] | None = None,
     range_z: Sequence[int | float] | None = None,
-    width: int | None = None,
-    height: int | None = None,
 ) -> go.Figure: ...
 def line_3d(
-    x: MultiColumnData | None = None,
-    y: MultiColumnData | None = None,
     z: MultiColumnData | None = None,
     line_dash: ColumnData | None = None,
     text: ColumnData | None = None,
@@ -320,62 +349,4 @@ def line_3d(
     range_x: Sequence[int | float] | None = None,
     range_y: Sequence[int | float] | None = None,
     range_z: Sequence[int | float] | None = None,
-    width: int | None = None,
-    height: int | None = None,
-) -> go.Figure: ...
-
-
-def sunburst(
-    names: ColumnData | None = None,
-    values: ColumnData | None = None,
-    parents: ColumnData | None = None,
-    path: ArrayLike | None = None,
-    ids: ColumnData | None = None,
-    color_continuous_scale: list[str] | None = None,
-    range_color: Sequence[int | float] | None = None,
-    color_continuous_midpoint: int | float | None = None,
-    hover_name: ColumnData | None = None,
-    hover_data: HoverData | None = None,
-    custom_data: MultiColumnData | None = None,
-    labels: dict[str, str] | None = None,
-    width: int | None = None,
-    height: int | None = None,
-    branchvalues: BranchVals | None = None,
-    maxdepth: int | None = None,
-) -> go.Figure: ...
-def treemap(
-    names: ColumnData | None = None,
-    values: ColumnData | None = None,
-    parents: ColumnData | None = None,
-    ids: ColumnData | None = None,
-    path: ArrayLike | None = None,
-    color_continuous_scale: list[str] | None = None,
-    range_color: Sequence[int | float] | None = None,
-    color_continuous_midpoint: int | float | None = None,
-    hover_name: ColumnData | None = None,
-    hover_data: HoverData | None = None,
-    custom_data: MultiColumnData | None = None,
-    labels: dict[str, str] | None = None,
-    width: int | None = None,
-    height: int | None = None,
-    branchvalues: BranchVals | None = None,
-    maxdepth: int | None = None,
-) -> go.Figure: ...
-def icicle(
-    names: ColumnData | None = None,
-    values: ColumnData | None = None,
-    parents: ColumnData | None = None,
-    path: ArrayLike | None = None,
-    ids: ColumnData | None = None,
-    color_continuous_scale: list[str] | None = None,
-    range_color: Sequence[int | float] | None = None,
-    color_continuous_midpoint: int | float | None = None,
-    hover_name: ColumnData | None = None,
-    hover_data: HoverData | None = None,
-    custom_data: MultiColumnData | None = None,
-    labels: dict[str, str] | None = None,
-    width: int | None = None,
-    height: int | None = None,
-    branchvalues: BranchVals | None = None,
-    maxdepth: int | None = None,
 ) -> go.Figure: ...
