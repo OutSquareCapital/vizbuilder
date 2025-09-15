@@ -11,25 +11,34 @@ def extract_scales():
         px.colors.qualitative,
         px.colors.sequential,
     )
+
+    return pc.Iter(modules).map(
+        lambda mod: pc.Dict(mod.__dict__)
+        .filter_values(lambda v: isinstance(v, list))
+        .map_keys(lambda k: f"{mod.__name__.split('.')[-1]}.{k}")
+        .unwrap()
+    )
+
+
+def convert_scales():
     color_filter: pl.Expr = (
         pl.col("color")
         .list.eval(pl.element().first().str.starts_with("#").alias("is_hex"))
         .list.first()
     )
-    scale_filter: pl.Expr = pl.col("scale").str.ends_with("r").not_()
 
-    data = pc.Iter(modules).map(
-        lambda mod: pc.Dict(mod.__dict__)
-        .filter_values(lambda v: isinstance(v, list))
-        .unwrap()
-    )
     return (
-        data.pipe_into(pl.LazyFrame)
+        extract_scales()
+        .pipe_into(pl.LazyFrame)
         .unpivot(value_name="color", variable_name="scale")
         .drop_nulls()
-        .filter(scale_filter)
-        .with_columns(pl.col("scale").cast(pl.Categorical), color_filter.alias("type"))
-        .sort("scale")
+        .filter(color_filter)
+        .select(
+            pl.col("scale").str.split(".").list.first().alias("module"),
+            pl.col("scale").str.split(".").list.last().alias("scale"),
+            pl.col("color"),
+        )
+        .sort("module", "scale")
         .collect()
     )
 
