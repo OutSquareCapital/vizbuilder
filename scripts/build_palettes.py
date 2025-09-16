@@ -1,3 +1,4 @@
+from enum import StrEnum
 from pathlib import Path
 
 import pychain as pc
@@ -5,30 +6,34 @@ import pychain as pc
 from vizbuilder._scales import get_palettes
 
 
+class Text(StrEnum):
+    CONTENT = "Palettes = Literal[\n"
+    END_CONTENT = "]"
+    START_MARKER = "# START MARKER"
+    END_MARKER = "# END MARKER"
+    ERROR = "Error: Markers not found in _scales.py"
+    SUCCESS = "✅ Successfully generated and updated Palettes Literal in _scales.py"
+
+
 def get_path():
     return Path().joinpath("src", "vizbuilder", "_scales.py")
 
 
 def generate_palettes_literal() -> None:
-    palette_names = pc.Dict(get_palettes()).iter_keys().sort()
-    literal_content: str = "Palettes = Literal[\n"
-    for name in palette_names.unwrap():
+    literal_content: str = Text.CONTENT
+    for name in pc.Dict(get_palettes()).iter_keys().sort().unwrap():
         literal_content += f'    "{name}",\n'
-    literal_content += "]"
+    literal_content += Text.END_CONTENT
     scales_file: Path = get_path()
     content: str = scales_file.read_text()
-
-    start_marker: str = "# START MARKER"
-    end_marker: str = "# END MARKER"
-
-    start_index: int = content.find(start_marker)
-    end_index: int = content.find(end_marker)
+    start_index: int = content.find(Text.START_MARKER)
+    end_index: int = content.find(Text.END_MARKER)
 
     if start_index == -1 or end_index == -1:
-        raise RuntimeError("Markers not found in _scales.py")
+        raise RuntimeError(Text.ERROR)
 
     new_content: str = (
-        content[: start_index + len(start_marker)]
+        content[: start_index + len(Text.START_MARKER)]
         + "\n"
         + literal_content
         + "\n"
@@ -36,7 +41,7 @@ def generate_palettes_literal() -> None:
     )
 
     scales_file.write_text(new_content)
-    print("✅ Successfully generated and updated Palettes Literal in _scales.py")
+    print(Text.SUCCESS)
 
 
 if __name__ == "__main__":

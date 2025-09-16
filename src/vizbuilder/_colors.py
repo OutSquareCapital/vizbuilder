@@ -41,7 +41,7 @@ class RGBColor:
 def palette_from_df(
     df: pl.DataFrame | pl.LazyFrame, group: str, base_palette: Iterable[str]
 ) -> dict[str, str]:
-    data = (
+    data: list[str] = (
         df.lazy()
         .select(pl.col(group).unique().sort())
         .collect()

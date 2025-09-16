@@ -144,10 +144,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl", hash = "sha256:7ad806edce9d3cdd882eaebaf97c0c9e252043ed1ed3d382c3e3520ec07806d4", size = 9791257, upload-time = "2025-08-12T20:22:09.205Z" },
 ]
 
+[package.optional-dependencies]
+express = [
+    { name = "numpy" },
+]
+
 [[package]]
 name = "plotly-stubs"
 version = "0.0.6"
-source = { git = "https://github.com/OutSquareCapital/plotly-stubs.git?rev=refactor-frame-types#5b88fe18983c55fa13b5cb08fff009cd1d4b743f" }
+source = { git = "https://github.com/OutSquareCapital/plotly-stubs.git?rev=refactor-frame-types#b9b886a17969e8318a55ec21cf464770f56937eb" }
 
 [[package]]
 name = "polars"
@@ -206,12 +211,11 @@ wheels = [
 
 [[package]]
 name = "pychain"
-version = "0.3.97"
-source = { git = "https://github.com/OutSquareCapital/pychain.git#c5b91c917f2d3065678f01dfbb74bbee1852c4d9" }
+version = "0.3.98"
+source = { git = "https://github.com/OutSquareCapital/pychain.git#447be8d0ee313c416011cc835ad8e0615860c51e" }
 dependencies = [
     { name = "cytoolz" },
     { name = "more-itertools" },
-    { name = "numpy" },
 ]
 
 [[package]]
@@ -228,7 +232,7 @@ name = "vizbuilder"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "plotly" },
+    { name = "plotly", extra = ["express"] },
     { name = "plotly-stubs" },
     { name = "polars" },
     { name = "pychain" },
@@ -241,7 +245,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "plotly", specifier = ">=6.3.0" },
+    { name = "plotly", extras = ["express"], specifier = ">=6.3.0" },
     { name = "plotly-stubs", git = "https://github.com/OutSquareCapital/plotly-stubs.git?rev=refactor-frame-types" },
     { name = "polars", specifier = ">=1.33.1" },
     { name = "pychain", git = "https://github.com/OutSquareCapital/pychain.git" },
