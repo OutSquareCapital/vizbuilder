@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import polars as pl
 
 from ._colors import palette_from_df
-from ._scales import Palettes, get_palette
+from ._scales import PALETTES, Palettes
 from ._types import DataFrameCompatible, FigureFunc, Templates
 
 
@@ -25,7 +25,7 @@ class Displayer:
         self.df = df
         self.group = group
         self.template = template
-        self.palette = get_palette(palette)
+        self.palette = PALETTES[palette]
         self.color_discrete_map = self.df.pipe(
             palette_from_df, self.group, self.palette
         )
@@ -56,7 +56,7 @@ class Displayer:
         """
         Set the color map using a predefined Plotly color scale and return self.
         """
-        self.palette = get_palette(palette)
+        self.palette = PALETTES[palette]
         return self._update()
 
     def set_group(self, group: str) -> Self:
@@ -66,6 +66,8 @@ class Displayer:
         self.group = group
         return self._update()
 
-    def _update(self):
-        self.df.pipe(palette_from_df, self.group, self.palette)
+    def _update(self) -> Self:
+        self.color_discrete_map = self.df.pipe(
+            palette_from_df, self.group, self.palette
+        )
         return self
