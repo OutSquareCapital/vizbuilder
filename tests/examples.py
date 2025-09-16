@@ -6,23 +6,16 @@ import polars as pl
 import vizbuilder as vz
 
 
-def source():
-    return (
-        Path()
-        .resolve()
-        .parent.joinpath("db")
-        .joinpath("prices")
-        .with_suffix(".parquet")
-    )
-
-
 def plot_graphs():
-    displayer = (
-        pl.scan_parquet(source())
+    (
+        pl.scan_parquet(
+            Path().resolve().parent.joinpath("db", "prices").with_suffix(".parquet")
+        )
         .sort("ticker", "date")
         .pipe(vz.Displayer, group="ticker", template="plotly_dark")
+        .plot(px.line, x="date", y="close")
+        .show()
     )
-    displayer.plot(px.line, x="date", y="close").show()
 
 
 if __name__ == "__main__":
