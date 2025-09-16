@@ -1,8 +1,6 @@
 from enum import StrEnum
 from pathlib import Path
 
-import pychain as pc
-
 from vizbuilder._scales import get_palettes
 
 
@@ -21,7 +19,7 @@ def get_path():
 
 def generate_palettes_literal() -> None:
     literal_content: str = Text.CONTENT
-    for name in pc.Dict(get_palettes()).iter_keys().sort().unwrap():
+    for name in get_palettes().iter_keys().sort().unwrap():
         literal_content += f'    "{name}",\n'
     literal_content += Text.END_CONTENT
     scales_file: Path = get_path()

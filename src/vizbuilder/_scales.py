@@ -35,7 +35,7 @@ def show_scales(module: Modules) -> go.Figure:
     )
 
 
-def get_palettes() -> dict[str, list[str]]:
+def get_palettes() -> pc.Dict[str, list[str]]:
     df: pl.DataFrame = (
         pc.Iter(MODULES.values())
         .map(
@@ -54,15 +54,12 @@ def get_palettes() -> dict[str, list[str]]:
         .sort("scale")
         .collect()
     )
-
-    return (
-        pc.Iter(df.get_column("scale").to_list())
-        .zip(df.get_column("color").to_list())
-        .pipe_into(dict)
-    )
+    keys: list[str] = df.get_column("scale").to_list()
+    values: list[list[str]] = df.get_column("color").to_list()
+    return pc.Dict.from_zipped(keys, values)
 
 
-PALETTES: dict[str, list[str]] = get_palettes()
+PALETTES: dict[str, list[str]] = get_palettes().unwrap()
 # START MARKER
 Palettes = Literal[
     "Alphabet",
