@@ -3,6 +3,12 @@
 A Python library for building interactive data visualizations with Plotly and Polars.
 Implement a builder pattern for creating complex visualizations step-by-step.
 
+## Installation
+
+```bash
+uv add git+https://github.com/OutSquareCapital/vizbuilder.git
+```
+
 ## Developpement
 
 ### Literal Palettes
