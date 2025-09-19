@@ -17,9 +17,9 @@ class RGBColor:
     def from_hex(cls, hex_color: str) -> Self:
         hex_color = hex_color.lstrip("#")
         result = (
-            pc.Iter.from_elements(0, 2, 4)
+            pc.iter_on(0, 2, 4)
             .map(lambda i: int(hex_color[i : i + 2], 16))
-            .pipe_into(tuple)
+            .pipe_unwrap(tuple)
         )
         return cls(*result)
 
@@ -58,8 +58,8 @@ def generate_palette(data: list[str], base_palette: Iterable[str]) -> dict[str, 
     segments: int = palette.length() - 1
 
     if segments < 1:
-        result = palette.head(1).repeat(n_colors).flatten().pipe_into(list)
-        return keys.zip(result).pipe_into(dict)
+        result = palette.head(1).repeat(n_colors).flatten().pipe_unwrap(list)
+        return keys.zip(result).pipe_unwrap(dict)
 
     total_interval: int = (n_colors - 1) if n_colors > 1 else 1
 
@@ -72,6 +72,6 @@ def generate_palette(data: list[str], base_palette: Iterable[str]) -> dict[str, 
         return rgb_left.join(rgb_right, factor).to_hex()
 
     result: list[str] = (
-        pc.Iter.from_range(0, n_colors).map(_calculate_color).pipe_into(list)
+        pc.iter_range(0, n_colors).map(_calculate_color).pipe_unwrap(list)
     )
-    return keys.zip(result).pipe_into(dict)
+    return keys.zip(result).pipe_unwrap(dict)

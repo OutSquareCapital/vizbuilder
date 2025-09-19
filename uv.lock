@@ -211,12 +211,18 @@ wheels = [
 
 [[package]]
 name = "pychain"
-version = "0.3.98"
-source = { git = "https://github.com/OutSquareCapital/pychain.git#447be8d0ee313c416011cc835ad8e0615860c51e" }
+version = "0.3.99"
+source = { git = "https://github.com/OutSquareCapital/pychain.git#bf0164bc300806f55a0c8ad3ec0815b799f9a5a6" }
 dependencies = [
     { name = "cytoolz" },
     { name = "more-itertools" },
+    { name = "rolling" },
 ]
+
+[[package]]
+name = "rolling"
+version = "0.5.0"
+source = { git = "https://github.com/OutSquareCapital/rolling.git?rev=add-type-stubs#70e8e6616fe400eda9739b29dff6d9b34321b550" }
 
 [[package]]
 name = "toolz"

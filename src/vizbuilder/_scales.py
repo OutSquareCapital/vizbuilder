@@ -1,49 +1,26 @@
-from typing import Literal, Protocol
+from types import ModuleType
+from typing import Literal
 
-import plotly.graph_objects as go
 import polars as pl
 import pychain as pc
 from plotly.express.colors import cyclical, qualitative, sequential
 
-
-class Swatchable(Protocol):
-    def swatches(self) -> go.Figure: ...
-
-
-MODULES: dict[str, Swatchable] = {
-    "sequential": sequential,
-    "cyclical": cyclical,
-    "qualitative": qualitative,
+MODULES: set[ModuleType] = {
+    sequential,
+    cyclical,
+    qualitative,
 }
-Modules = Literal["sequential", "cyclical", "qualitative"]
-
-
-def show_scales(module: Modules) -> go.Figure:
-    """
-    Return a Plotly figure showing the color swatches.
-    """
-    return (
-        MODULES[module]
-        .swatches()
-        .update_layout(
-            title=None,
-            height=550,
-            width=400,
-            margin={"l": 0, "r": 0, "t": 0, "b": 0},
-            paper_bgcolor="#181c1a",
-        )
-    )
 
 
 def get_palettes() -> pc.Dict[str, list[str]]:
     df: pl.DataFrame = (
-        pc.Iter(MODULES.values())
+        pc.Iter(MODULES)
         .map(
-            lambda mod: pc.Dict(mod.__dict__)
+            lambda mod: pc.dict_of(mod)
             .filter_values(lambda v: isinstance(v, list))
             .unwrap()
         )
-        .pipe_into(pl.LazyFrame)
+        .pipe_unwrap(pl.LazyFrame)
         .unpivot(value_name="color", variable_name="scale")
         .drop_nulls()
         .filter(
@@ -56,7 +33,7 @@ def get_palettes() -> pc.Dict[str, list[str]]:
     )
     keys: list[str] = df.get_column("scale").to_list()
     values: list[list[str]] = df.get_column("color").to_list()
-    return pc.Dict.from_zipped(keys, values)
+    return pc.dict_zip(keys, values)
 
 
 PALETTES: dict[str, list[str]] = get_palettes().unwrap()

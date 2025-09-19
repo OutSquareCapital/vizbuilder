@@ -9,11 +9,10 @@ from ._types import DataFrameCompatible, FigureFunc, Templates
 
 
 class Displayer:
-    df: pl.LazyFrame
     group: str
     template: Templates
-    palette: list[str]
     color_discrete_map: dict[str, str]
+    __slots__ = ("group", "template", "color_discrete_map")
 
     def __init__(
         self,
@@ -22,12 +21,10 @@ class Displayer:
         palette: Palettes = "Plotly",
         template: Templates = "plotly",
     ) -> None:
-        self.df = df
         self.group = group
         self.template = template
-        self.palette = PALETTES[palette]
-        self.color_discrete_map = self.df.pipe(
-            palette_from_df, self.group, self.palette
+        self.color_discrete_map = df.pipe(
+            palette_from_df, self.group, PALETTES[palette]
         )
 
     @classmethod
@@ -44,7 +41,6 @@ class Displayer:
         Build and return a Plotly figure using the provided function and stored data.
         """
         return func(
-            self.df.collect(),
             *args,
             **kwargs,
             color=self.group,  # type: ignore[arg-type]
@@ -52,22 +48,9 @@ class Displayer:
             color_discrete_map=self.color_discrete_map,  # type: ignore[arg-type]
         )  # type: ignore[arg-type]
 
-    def set_palette(self, palette: Palettes) -> Self:
-        """
-        Set the color map using a predefined Plotly color scale and return self.
-        """
-        self.palette = PALETTES[palette]
-        return self._update()
-
     def set_group(self, group: str) -> Self:
         """
         Set the grouping column for the graphs and return self.
         """
         self.group = group
-        return self._update()
-
-    def _update(self) -> Self:
-        self.color_discrete_map = self.df.pipe(
-            palette_from_df, self.group, self.palette
-        )
         return self
