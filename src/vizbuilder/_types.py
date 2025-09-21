@@ -26,13 +26,23 @@ Templates = Literal[
 
 TemplatesValues: tuple[str, ...] = get_args(Templates)
 
-
-class GraphArgs(TypedDict):
-    template: Templates | None
-    color: str | None
-    color_discrete_map: dict[str, str] | None
-
+DisplayMode = Literal["group", "overlay"]
+BarMode = Literal["relative", "group", "overlay"]
+Points = Literal["all", "outliers", "suspectedoutliers"]
 
 type ArrayLike = Sequence[Any] | pl.Series
 type FrameOrDict = DataFrameCompatible | dict[str, ArrayLike] | Sequence[dict[str, Any]]
 type FigureFunc[**P] = Callable[P, go.Figure]
+
+
+class GraphKwargs(TypedDict):
+    template: Templates
+    width: int | None
+    height: int | None
+    color: str
+    color_discrete_map: dict[str, str]
+
+
+class TwoDGraphKwargs(TypedDict):
+    log_x: bool
+    log_y: bool

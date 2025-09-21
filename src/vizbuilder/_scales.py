@@ -31,12 +31,13 @@ def get_palettes() -> pc.Dict[str, list[str]]:
         .sort("scale")
         .collect()
     )
-    keys: list[str] = df.get_column("scale").to_list()
-    values: list[list[str]] = df.get_column("color").to_list()
-    return pc.dict_zip(keys, values)
+    return pc.dict_zip(
+        keys=df.get_column("scale").to_list(), values=df.get_column("color").to_list()
+    )
 
 
 PALETTES: dict[str, list[str]] = get_palettes().unwrap()
+
 # START MARKER
 Palettes = Literal[
     "Alphabet",
