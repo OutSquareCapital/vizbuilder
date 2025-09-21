@@ -36,7 +36,6 @@ class Displayer:
         "_color_discrete_map",
         "_width",
         "_height",
-        "_palette",
     )
 
     def __init__(
@@ -49,7 +48,7 @@ class Displayer:
         self._df = df.lazy()
         self._group = group
         self._template = template
-        self._color_discrete_map = df.pipe(palette_from_df, self._group, self._palette)
+        self._color_discrete_map = df.pipe(palette_from_df, self._group, palette)
         self._log_x = False
         self._log_y = False
         self._width = None
