@@ -14,7 +14,7 @@ class Text(StrEnum):
 
 
 def get_path():
-    return Path().joinpath("src", "vizbuilder", "_scales.py")
+    return Path().joinpath("src", "vizbuilder", "_scales").with_suffix(".py")
 
 
 def generate_palettes_literal() -> None:

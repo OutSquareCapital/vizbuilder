@@ -6,7 +6,7 @@ import polars as pl
 from plotly.graph_objects import Figure
 
 from ._colors import palette_from_df
-from ._scales import Palettes
+from ._scales import PALETTES, Palettes
 from ._types import (
     BarMode,
     DataFrameCompatible,
@@ -42,13 +42,15 @@ class Displayer:
         self,
         df: pl.LazyFrame | pl.DataFrame,
         group: str,
-        palette: Palettes = "Plotly",
-        template: Templates = "plotly",
+        palette: Palettes = "Turbo",
+        template: Templates = "plotly_dark",
     ) -> None:
         self._df = df.lazy()
         self._group = group
         self._template = template
-        self._color_discrete_map = df.pipe(palette_from_df, self._group, palette)
+        self._color_discrete_map = df.pipe(
+            palette_from_df, self._group, PALETTES[palette]
+        )
         self._log_x = False
         self._log_y = False
         self._width = None
@@ -56,7 +58,7 @@ class Displayer:
 
     @classmethod
     def from_df_like(cls, df_like: DataFrameCompatible, group: str) -> Self:
-        return cls(pl.from_dataframe(df_like).lazy(), group)
+        return cls(pl.from_dataframe(df_like), group)
 
     @property
     def _common_kwargs(self) -> GraphKwargs:
@@ -75,7 +77,7 @@ class Displayer:
             log_y=self._log_y,
         )
 
-    def line(self, x: str, y: str, title: str | None = None):
+    def line(self, x: str, y: str, title: str | None = None) -> Figure:
         return px.line(
             self._df.select(self._group, y, x).collect(),
             x=x,
@@ -92,7 +94,7 @@ class Displayer:
         agg_expr: Callable[[str], pl.Expr],
         title: str | None = None,
         barmode: BarMode = "relative",
-    ):
+    ) -> Figure:
         return px.bar(
             self._df.group_by(self._group).agg(agg_expr(y)).sort(y).collect(),
             y=y,
@@ -109,7 +111,7 @@ class Displayer:
         title: str | None = None,
         barmode: BarMode = "overlay",
         nbins: int | None = None,
-    ):
+    ) -> Figure:
         return px.histogram(
             self._df.select(self._group, x).collect(),
             x=x,
@@ -121,7 +123,9 @@ class Displayer:
             **self._common_kwargs,
         )
 
-    def box(self, y: str, title: str | None = None, boxmode: DisplayMode = "group"):
+    def box(
+        self, y: str, title: str | None = None, boxmode: DisplayMode = "group"
+    ) -> Figure:
         return px.box(
             self._df.select(self._group, y).collect(),
             y=y,
